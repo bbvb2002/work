@@ -19,6 +19,7 @@ public class MainActivity extends SherlockActivity {
         actionBar = getSupportActionBar();
         actionBar.setTitle("new title");
         actionBar.setHomeButtonEnabled(true);
+        
        
     }
 
