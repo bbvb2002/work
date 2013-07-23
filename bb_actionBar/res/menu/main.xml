@@ -1,0 +1,28 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/action_start"
+        android:orderInCategory="100"
+        android:showAsAction="always"
+        android:title="start">
+        <menu>
+            <item android:id="@+id/startitem1"
+                android:title="startItem1"/>
+            <item android:id="@+id/startitem2"
+                android:title="startItem2"/>
+        </menu>
+    </item>
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/action_settings">
+        <menu>
+            <item android:id="@+id/subitem1"
+                android:title="subItem1"/>
+            <item android:id="@+id/subitem2"
+                android:title="subItem2"/>
+        </menu>
+    </item>
+
+</menu>
