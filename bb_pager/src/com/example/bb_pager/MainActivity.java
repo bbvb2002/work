@@ -4,13 +4,34 @@ import com.viewpagerindicator.CirclePageIndicator;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.Menu;
+
 
 public class MainActivity extends FragmentActivity {
 
 	private ViewPager viewpager;
 	private CirclePageIndicator indicator;
-	private FragmentPagerAdapter adapter = new FragmentPageAdapter();
+	
+	private FragmentPagerAdapter adapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
+		
+		@Override
+		public int getCount() {
+			// TODO Auto-generated method stub
+			return 0;
+		}
+		
+		@Override
+		public Fragment getItem(int arg0) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+	};
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
