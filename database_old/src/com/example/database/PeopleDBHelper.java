@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.util.Pair;
 
 public class PeopleDBHelper extends SQLiteOpenHelper {
 
@@ -27,7 +28,7 @@ public class PeopleDBHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		db.execSQL(CREATE_TABLE);
+		db.execSQL(CreateTable(People.class));
 		Log.d("debug", "onCreate");
 	}
 
@@ -37,18 +38,27 @@ public class PeopleDBHelper extends SQLiteOpenHelper {
 		Log.d("debug", "onUpgrade");
 	}
 
-	public long insert(People people) {
+	public long insert(Object object) {
 		Log.d("debug", "insert");
 		SQLiteDatabase db = getWritableDatabase();
-		ContentValues values = new ContentValues();
-		values.put("id", people.getId());
-		values.put("name", people.getName());
-		values.put("age", people.getAge());
-		values.put("phone", people.getPhone());
+		ContentValues values = Util.parseContentValues(object);
+		
 		long rowId = db.insert(TABLE_NAME, null, values);
 		return rowId;
 	}
-
+	
+	public String CreateTable(Class<?> cls){
+		List<Pair<String,String>> fields = Util.getFields(cls);
+		String fieldStr ="";
+		
+		for(Pair<String,String> field : fields){
+			fieldStr = field.first+" "+field.second+",";
+		}
+		
+		fieldStr += "PRIMARY KEY(id)";
+		fieldStr ="CREATE TABLE "+cls.getSimpleName()+"("+fieldStr+")";
+		return fieldStr;
+	}
 	public List<People> getPeoples() {
 		SQLiteDatabase db = getWritableDatabase();
 		String sql = "SELECT * FROM " + TABLE_NAME;
