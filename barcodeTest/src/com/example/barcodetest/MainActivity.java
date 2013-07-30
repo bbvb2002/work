@@ -114,7 +114,7 @@ public class MainActivity extends Activity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// TODO Auto-generated method stub
 		if (requestCode == BARCODE_SCANNER_CODE && resultCode == RESULT_OK) {
-			String result = data.getStringExtra("SCAN_REUSLT");
+			String result = data.getStringExtra("SCAN_RESULT");
 			String format = data.getStringExtra("SCAN_RESULT_FORMAT");
 			
 			textview_result.setText(result);
