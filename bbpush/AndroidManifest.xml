@@ -31,6 +31,12 @@
     <action android:name="android.intent.action.BOOT_COMPLETED" />
     <action android:name="android.intent.action.USER_PRESENT" />
   </intent-filter>
+  
+</receiver>
+<receiver android:name="com.example.bbpush.MyPushReceiver">
+<intent-filter>
+  <action android:name="com.example.UPDATE_STATUS" />
+</intent-filter>
 </receiver>
     </application>
 

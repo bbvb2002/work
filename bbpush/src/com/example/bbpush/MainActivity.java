@@ -3,10 +3,15 @@ package com.example.bbpush;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.os.Bundle;
 import android.provider.Settings.Secure;
 import android.app.Activity;
+import android.content.Intent;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
@@ -15,7 +20,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseAnalytics;
@@ -53,14 +57,31 @@ public class MainActivity extends Activity {
 		 textview.setText(getdeviceId());
 		 spinner = (Spinner) findViewById(R.id.spinner1);
 		 setDeviceId();
+		 
+		 Intent intent = new Intent();
+		 intent.setAction("com.example.UPDATE_STATUS");
+		 sendBroadcast(intent);
+		 
 		 button.setOnClickListener(new OnClickListener() {
 		 
 		 
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				JSONObject data = new JSONObject();
+				
+				try {
+					data.put("action", "com.example.UPDATE_STATUS");
+					data.put("id", getdeviceId());
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				
 				ParsePush push = new ParsePush();
 				//push.setChannel("all");
+				push.setData(data);
 				push.setChannel("deviceid_"+spinner.getSelectedItem().toString());
 				Toast.makeText(MainActivity.this,spinner.getSelectedItem().toString() , Toast.LENGTH_LONG).show();
 				push.setMessage(edittext.getText().toString());
@@ -75,14 +96,24 @@ public class MainActivity extends Activity {
 	}
 	
 	private void register(){
-		ParseObject object = new ParseObject("deviceId");
-		object.put("id", getdeviceId());
-		try {
-			object.save();
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
+		ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("device_id");
+		query.whereEqualTo("id", getdeviceId());
+		query.findInBackground(new FindCallback<ParseObject>() {
+			
+			@Override
+			public void done(List<ParseObject> objects, ParseException e) {
+				// TODO Auto-generated method stub
+				if(objects.size()==0)
+				{
+					ParseObject object = new ParseObject("deviceId");
+					object.put("id", getdeviceId());
+					object.saveInBackground();
+				}	
+			}
+		});
+		
+	
 		
 	}
 	
@@ -114,4 +145,18 @@ public class MainActivity extends Activity {
 		return true;
 	}
 
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// TODO Auto-generated method stub
+		switch(item.getItemId()){
+		case R.id.action_reflash:
+			setDeviceId();
+			break;
+		case R.id.action_settings:
+			break;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+	
+	
 }
