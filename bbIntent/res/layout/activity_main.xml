@@ -48,11 +48,11 @@
         android:hint="bbvb2002@gmail.com" />
 
     <Button
-        android:id="@+id/btn_email"
+        android:id="@+id/btn_mail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="SMS"  
-        android:onClick="clickemailButton" />
+        android:text="Email"  
+        android:onClick="clickEmailButton" />
  <EditText
         android:id="@+id/edit_sms"
         android:layout_width="match_parent"
@@ -72,6 +72,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Contact"  
-        android:onClick="clickcontactButton" />
-    
+        android:onClick="clickContactButton" />
+       <Button
+        android:id="@+id/btn_brocast"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Brocast"  
+        android:onClick="clickBroadCastButton" />
 </LinearLayout>

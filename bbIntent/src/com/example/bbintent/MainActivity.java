@@ -1,5 +1,10 @@
 package com.example.bbintent;
 
+import java.io.IOException;
+import java.io.InputStream;
+
+import org.apache.http.util.ByteArrayBuffer;
+
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -9,6 +14,7 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
@@ -40,10 +46,20 @@ public class MainActivity extends Activity {
 	public void clickPhoneButton(View view){
 		
 		String phone = edit_phone.getText().toString();
-		Uri uri = Uri.parse("tel:"+phone);
-		Intent intent = new Intent(Intent.ACTION_CALL,uri);
 		
-		startActivity(intent);
+		String[] command = new String[]{
+				"am", "start",
+				"--user", "0",
+				"-a", "android.intent.action.CALL",
+				"-d", "tel:"+ phone};
+		
+		String returnstr = execCommand(command);
+		Toast.makeText(this, returnstr, Toast.LENGTH_LONG).show();
+		
+//		Uri uri = Uri.parse("tel:"+phone);
+//		Intent intent = new Intent(Intent.ACTION_CALL,uri);
+//		
+//		startActivity(intent);
 	}
 	
 	public void clickWebButton(View view){
@@ -73,6 +89,28 @@ public class MainActivity extends Activity {
 		Intent intent = new Intent(Intent.ACTION_VIEW,ContactsContract.Contacts.CONTENT_URI);
 		
 		startActivity(intent);
+	}
+	public void clickBroadCastButton(View view){
+		
+		Intent intent = new Intent();
+		
+		intent.setAction("com.example.intentex.broadcast");
+		intent.putExtra("text", "hello bb");
+		sendBroadcast(intent);
+	}
+	
+	private String execCommand(String[] commands){
+		try {
+			Process ps= Runtime.getRuntime().exec(commands);
+			InputStream is= ps.getInputStream();
+			byte[] buffer = new byte[1024];
+			is.read(buffer);
+			return new String(buffer);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }
